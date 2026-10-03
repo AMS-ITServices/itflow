@@ -18,6 +18,7 @@
  *   due           optional - Due date, YYYY-MM-DD
  *                            (default: date + the client's net terms)
  *   scope         optional - Short description, max 255 chars
+ *   notes         optional - Invoice notes (free text)
  *   category_id   optional - Income category id (default 0)
  *   discount      optional - Invoice discount amount (default 0)
  *   items         optional - Array of line items, each:
@@ -58,6 +59,7 @@ if (!empty($client_exists)) {
     $date_in     = trim($_POST['date'] ?? '');
     $due_in      = trim($_POST['due'] ?? '');
     $scope       = escapeSql(substr(trim($_POST['scope'] ?? ''), 0, 255));
+    $notes       = escapeSql($_POST['notes'] ?? '');
     $category_id = intval($_POST['category_id'] ?? 0);
     $discount    = floatval($_POST['discount'] ?? 0);
     $items       = (isset($_POST['items']) && is_array($_POST['items'])) ? $_POST['items'] : [];
@@ -104,6 +106,7 @@ if (!empty($client_exists)) {
         invoice_prefix = '$invoice_prefix',
         invoice_number = $invoice_number,
         invoice_scope = '$scope',
+        invoice_note = '$notes',
         invoice_date = '$date',
         $due_sql,
         invoice_discount_amount = '$discount',
